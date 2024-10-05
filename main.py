@@ -15,17 +15,23 @@ sl.subheader(f"{option} for the next {days} days in {place}")
 
 if place:
 #call the imported get_data function to get the data
-   filtered_data=get_data(place,days)
+   try:
+      filtered_data=get_data(place,days)
+
+   
 
 #ploting the graph for tempreature
-   if option=="Temperature":
-      temp=[dict["main"]["temp"] for dict in filtered_data]
-      dates=[dict["dt_txt"] for dict in filtered_data]
-      figure=px.line(x=dates ,y=temp ,labels={"x":"Date","y":"Tempreature (C)"})
-      sl.plotly_chart(figure)
+      if option=="Temperature":
+         temp=[dict["main"]["temp"]/10 for dict in filtered_data]
+         dates=[dict["dt_txt"] for dict in filtered_data]
+         figure=px.line(x=dates ,y=temp ,labels={"x":"Date","y":"Tempreature (C)"})
+         sl.plotly_chart(figure)
 
-   if option=="Sky":
-      image={"Clear": "conditions/clear.png","Clouds": "conditions/cloud.png","Rain": "conditions/rain.png","Snow": "conditions/snow.png"}
-      sky=[dict["weather"][0]["main"] for dict in filtered_data]
-      image_path=[image[condition] for condition in sky]
-      sl.image(image_path,width=115)
+      if option=="Sky":
+         image={"Clear": "conditions/clear.png","Clouds": "conditions/cloud.png","Rain": "conditions/rain.png","Snow": "conditions/snow.png"}
+         sky=[dict["weather"][0]["main"] for dict in filtered_data]
+         image_path=[image[condition] for condition in sky]
+         sl.image(image_path,width=115)
+      
+   except KeyError:
+      sl.error("Place does not exist.")
