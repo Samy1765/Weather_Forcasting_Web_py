@@ -3,7 +3,7 @@ import plotly.express as px
 from backend import get_data
 
 # frondend part
-sl.set_page_config(layout="wide")
+
 
 sl.header("Weather Forecasting For The Next Days")
 
